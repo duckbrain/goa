@@ -124,6 +124,19 @@ import (
 //	    })
 //	})
 //
+// - "protoc:cmd" provides an alternate command to execute for protoc with
+// optional arguments. Applicable to API and service definitions only. If used
+// on an API definition the include paths are used for all services. Can be
+// used to specify custom options or alternate implementations.
+//
+//	var _ = API("myapi", func() {
+//	    Meta("protoc:cmd", "go", "run", "github.com/duckbrain/goprotoc")
+//	})
+//
+//	var _ = Service("service1", func() {
+//	    Meta("protoc:cmd", "protoc", "--fatal_warnings")
+//	})
+//
 // - "protoc:include" provides the list of import paths used to invoke protoc.
 // Applicable to API and service definitions only. If used on an API definition
 // the include paths are used for all services.

@@ -49,7 +49,7 @@ func TestProtoFiles(t *testing.T) {
 			}
 			assert.Equal(t, c.Code, code)
 			fpath := codegen.CreateTempFile(t, code)
-			assert.NoError(t, protoc(fpath, nil), "error occurred when compiling proto file %q", fpath)
+			assert.NoError(t, protoc(defaultProtocCmd, fpath, nil), "error occurred when compiling proto file %q", fpath)
 		})
 	}
 }
@@ -85,7 +85,7 @@ func TestMessageDefSection(t *testing.T) {
 			}
 			assert.Equal(t, c.Code, msgCode)
 			fpath := codegen.CreateTempFile(t, code+msgCode)
-			assert.NoError(t, protoc(fpath, nil), "error occurred when compiling proto file %q", fpath)
+			assert.NoError(t, protoc(defaultProtocCmd, fpath, nil), "error occurred when compiling proto file %q", fpath)
 		})
 	}
 }
