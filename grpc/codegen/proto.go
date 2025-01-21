@@ -131,7 +131,7 @@ func protoc(protocCmd []string, path string, includes []string) error {
 	for _, include := range includes {
 		args = append(args, "-I", include)
 	}
-	cmd := exec.Command(protocCmd[0], append(protocCmd[1:], args...)...)
+	cmd := exec.Command(protocCmd[0], append(protocCmd[1:len(protocCmd):len(protocCmd)], args...)...)
 	cmd.Dir = filepath.Dir(path)
 
 	if output, err := cmd.CombinedOutput(); err != nil {
