@@ -11,6 +11,8 @@ import (
 // Root is the root object built by the DSL.
 var Root = new(RootExpr)
 
+const DefaultProtoc = "protoc"
+
 type (
 	// RootExpr is the struct built by the DSL on process start.
 	RootExpr struct {

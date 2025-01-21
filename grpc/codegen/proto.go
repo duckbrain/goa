@@ -112,7 +112,7 @@ func pkgName(svc *expr.GRPCServiceExpr, svcName string) string {
 	return codegen.SnakeCase(svcName)
 }
 
-var defaultProtocCmd = []string{"protoc"}
+var defaultProtocCmd = []string{expr.DefaultProtoc}
 
 func protoc(protocCmd []string, path string, includes []string) error {
 	dir := filepath.Dir(path)
