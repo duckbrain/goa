@@ -20,12 +20,16 @@ func TestInvalidArgError(t *testing.T) {
 		"ErrorName (int)":      {func() { Type("name", func() { ErrorName(1, 2) }) }, "cannot use 2 (type int) as type name"},
 		"Example":              {func() { Example(1, 2) }, "cannot use 1 (type int) as type summary (string)"},
 		"Headers":              {func() { Headers(1) }, "cannot use 1 (type int) as type function"},
+		"MapParams":            {func() { Service("s", func() { Method("m", func() { HTTP(func() { MapParams(1) }) }) }) }, "cannot use 1 (type int) as type string"},
+		"OneOf (function)":     {func() { Type("name", func() { OneOf("name", "description", 1) }) }, "cannot use 1 (type int) as type function"},
+		"OneOf (string)":       {func() { Type("name", func() { OneOf("name", 1, func() {}) }) }, "cannot use 1 (type int) as type string"},
 		"Param":                {func() { API("name", func() { HTTP(func() { Params(1) }) }) }, "cannot use 1 (type int) as type function"},
 		"Response":             {func() { Service("s", func() { HTTP(func() { Response(1) }) }) }, "cannot use 1 (type int) as type name of error"},
 		"ResultType":           {func() { ResultType("identifier", 1) }, "cannot use 1 (type int) as type function or string"},
 		"Security":             {func() { Security(1) }, "cannot use 1 (type int) as type security scheme or security scheme name"},
 		"Security (typed nil)": {func() { Security((*expr.SchemeExpr)(nil)) }, "cannot use (*expr.SchemeExpr)(nil) (type *expr.SchemeExpr) as type security scheme"},
 		"Type":                 {func() { Type("name", 1) }, "cannot use 1 (type int) as type type or function"},
+		"Type (DataType)":      {func() { Type("name", String, 1) }, "cannot use 1 (type int) as type function"},
 	}
 	for name, tc := range dsls {
 		t.Run(name, func(t *testing.T) {

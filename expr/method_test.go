@@ -154,3 +154,31 @@ func TestMethodExprIsPayloadStreaming(t *testing.T) {
 		}
 	}
 }
+
+func TestMethodExprValidateInterceptors(t *testing.T) {
+	cases := []struct {
+		Name  string
+		DSL   func()
+		Error string
+	}{
+		{"no-interceptors", testdata.NoInterceptorsDSL, ""},
+		{"valid-interceptors", testdata.ValidInterceptorsDSL, ""},
+		{"duplicate-interceptors", testdata.DuplicateInterceptorsDSL, ""}, // Duplicates are handled by merging
+		{"mixed-interceptors", testdata.MixedInterceptorsDSL, ""},
+		{"undefined-interceptor", testdata.UndefinedInterceptorDSL,
+			`ServerInterceptor: interceptor "undefined" not found in service "Service" method "Method"`},
+		{"empty-interceptor-name", testdata.EmptyInterceptorNameDSL,
+			`ServerInterceptor: interceptor name cannot be empty`},
+	}
+
+	for _, c := range cases {
+		t.Run(c.Name, func(t *testing.T) {
+			if c.Error == "" {
+				expr.RunDSL(t, c.DSL)
+				return
+			}
+			err := expr.RunInvalidDSL(t, c.DSL)
+			assert.Contains(t, err.Error(), c.Error)
+		})
+	}
+}

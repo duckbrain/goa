@@ -195,6 +195,9 @@ func Files(genpkg string, service *expr.ServiceExpr, userTypePkgs map[string][]s
 	}
 	files := []*codegen.File{{Path: svcPath, SectionTemplates: sections}}
 
+	// service and client interceptors
+	files = append(files, InterceptorsFiles(genpkg, service)...)
+
 	// user types
 	paths := make([]string, len(typeDefSections))
 	i := 0
