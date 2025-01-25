@@ -283,3 +283,28 @@ func (c *Client) BidirectionalStreamingNoPayloadMethod(ctx context.Context) (res
 	return ires.(BidirectionalStreamingNoPayloadMethodClientStream), nil
 }
 `
+
+const InterceptorClient = `// Client is the "ServiceWithClientInterceptor" service client.
+type Client struct {
+	MethodEndpoint goa.Endpoint
+}
+
+// NewClient initializes a "ServiceWithClientInterceptor" service client given
+// the endpoints.
+func NewClient(method goa.Endpoint, ci ClientInterceptors) *Client {
+	return &Client{
+		MethodEndpoint: WrapMethodClientEndpoint(method, ci),
+	}
+}
+
+// Method calls the "Method" endpoint of the "ServiceWithClientInterceptor"
+// service.
+func (c *Client) Method(ctx context.Context, p string) (res string, err error) {
+	var ires any
+	ires, err = c.MethodEndpoint(ctx, p)
+	if err != nil {
+		return
+	}
+	return ires.(string), nil
+}
+`

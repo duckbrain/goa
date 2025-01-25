@@ -1,0 +1,48 @@
+// ServerInterceptors defines the interface for all server-side interceptors.
+// Server interceptors execute after the request is decoded and before the
+// payload is sent to the service. The implementation is responsible for calling
+// next to complete the request.
+type ServerInterceptors interface {
+	Validation(ctx context.Context, info *ValidationInfo, next goa.Endpoint) (any, error)
+}
+
+// Access interfaces for interceptor payloads and results
+type (
+	// ValidationInfo provides metadata about the current interception.
+	// It includes service name, method name, and access to the endpoint.
+	ValidationInfo goa.InterceptorInfo
+
+	// ValidationPayload provides type-safe access to the method payload.
+	// It allows reading and writing specific fields of the payload as defined
+	// in the design.
+	ValidationPayload interface {
+		Name() string
+	}
+)
+
+// Private implementation types
+type (
+	validationMethodPayload struct {
+		payload *MethodPayload
+	}
+)
+
+// WrapMethodEndpoint wraps the Method endpoint with the server-side
+// interceptors defined in the design.
+func WrapMethodEndpoint(endpoint goa.Endpoint, i ServerInterceptors) goa.Endpoint {
+	endpoint = wrapMethodvalidation(endpoint, i)
+	return endpoint
+}
+
+// Public accessor methods for Info types
+
+// Payload returns a type-safe accessor for the method payload.
+func (info *ValidationInfo) Payload() ValidationPayload {
+	return &validationMethodPayload{payload: info.RawPayload.(*MethodPayload)}
+}
+
+// Private implementation methods
+
+func (p *validationMethodPayload) Name() string {
+	return p.payload.Name
+}

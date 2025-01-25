@@ -1,8 +1,9 @@
 import (
 	"fmt"
-	cli "my/pkg/path/grpc/cli/single_host"
+	cli "grpc/cli/test"
 	"os"
 
+	"./interceptors"
 	goa "goa.design/goa/v3/pkg"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -13,5 +14,17 @@ func doGRPC(_, host string, _ int, _ bool) (goa.Endpoint, any, error) {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "could not connect to gRPC server at %s: %v\n", host, err)
 	}
-	return cli.ParseEndpoint(conn)
+	serviceWithInterceptorsInterceptors := interceptors.NewServiceWithInterceptorsClientInterceptors()
+	return cli.ParseEndpoint(
+		conn,
+		serviceWithInterceptorsInterceptors,
+	)
+}
+
+func grpcUsageCommands() string {
+	return cli.UsageCommands()
+}
+
+func grpcUsageExamples() string {
+	return cli.UsageExamples()
 }
