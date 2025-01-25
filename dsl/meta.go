@@ -5,6 +5,10 @@ import (
 	"goa.design/goa/v3/expr"
 )
 
+// DefaultProtoc is the default command to be invoked for generating code from protobuf schemas.
+// You may use this to prepend arguments/flags to the command or revert to the default command.
+//
+// See also [Meta]; this is useful with the "protoc:cmd" key.
 const DefaultProtoc = expr.DefaultProtoc
 
 // Meta defines a set of key/value pairs that can be assigned to an object. Each

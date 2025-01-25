@@ -11,6 +11,7 @@ import (
 // Root is the root object built by the DSL.
 var Root = new(RootExpr)
 
+// DefaultProtoc is the default command to be invoked for generating code from protobuf schemas.
 const DefaultProtoc = "protoc"
 
 type (
